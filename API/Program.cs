@@ -1,37 +1,56 @@
+using Core.Interfaces;
 using Infrastructure.Data;
+using Infrastructure.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-
 // Add services to the container.
+// Order not matter
 builder.Services.AddDbContext<StoreContext>
-(options=>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("connectionKey"))
+(
+    options =>
+    options.UseSqlServer
+    (
+    builder.Configuration.GetConnectionString("connectionKey")
+     , b=>b.MigrationsAssembly(@"Infrastructure\Data")
+    )
 );
+builder.Services.AddScoped<IProductRepository,ProductRepository>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
 var app = builder.Build();
-
+using(var scope = app.Services.CreateScope())
+{
+var services = scope.ServiceProvider;
+var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+try
+{
+    var context = services.GetRequiredService<StoreContext>();
+     await context.Database.MigrateAsync();
+     await StoreContextSeed.SeedAsync(context,loggerFactory);
+}
+catch (Exception e)
+{
+    var logger = loggerFactory.CreateLogger<Program>();
+    logger.LogError(e,"An Error Occured during migration");
+}
+}
 // Configure the HTTP request pipeline.
+// Order Matter
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 app.UseHttpsRedirection();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
 /*
 core will have Entities 
 infrastructure will have context
-
 */
 #region Application Folw
 /*
@@ -46,6 +65,5 @@ we can add some configurations in appsettings.json and appsettings.development.j
 one for development mode and the other for production mode
 we can add services to the DI container by using builder.services.add(service) 
 to be availabe to other parts of the code
-
 */
 #endregion

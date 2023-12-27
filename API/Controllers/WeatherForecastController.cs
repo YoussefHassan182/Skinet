@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 //Attribute that gives the controlle features and abilities related to being an API controller.
+//It also add some validation about route parameters
 [ApiController]
 //Route attribute specifies how the client able to send a request to our controller and it is going to hit the end point
 //controller inside square brackets is a place holder to the class name
