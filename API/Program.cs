@@ -1,12 +1,10 @@
-using System.Linq.Expressions;
-using API.Helpers;
-using AutoMapper;
-using Core.Interfaces;
+using API.Extensions;
+using API.Middlewares;
 using Infrastructure.Data;
-using Infrastructure.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+Console.WriteLine(args);
 // Add services to the container.
 // Order not matter
 builder.Services.AddDbContext<StoreContext>
@@ -18,13 +16,11 @@ builder.Services.AddDbContext<StoreContext>
      , b=>b.MigrationsAssembly(@"Infrastructure\Data\Migrations")
     )
 );
-builder.Services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
-builder.Services.AddScoped<IProductRepository,ProductRepository>();
 builder.Services.AddControllers();
-builder.Services.AddAutoMapper(typeof(MappingProfiles));
+builder.Services.AddSwaggerDocumentation();
+builder.Services.AddApplicationServices();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 var app = builder.Build();
 using(var scope = app.Services.CreateScope())
 {
@@ -46,9 +42,11 @@ catch (Exception e)
 // Order Matter
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+   app.UseSwaggerDocumentation();
 }
+app.UseMiddleware<ExceptionMiddleware>();
+//when the request comes to api but we don't have an end point that matches the request then it will hit this middleware
+app.UseStatusCodePagesWithReExecute("/errors/{0}");
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseStaticFiles();
