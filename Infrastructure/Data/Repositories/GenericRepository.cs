@@ -15,6 +15,10 @@ namespace Infrastructure.Data.Repositories
             _StoreContext = storeContext;
         }
 
+        public async Task<int> CountAsync(ISpecifications<T> spec)
+        {
+            return await ApplySpecification(spec).CountAsync(); 
+        }
 
         public async Task<IReadOnlyList<T>> GetAllAsync()
         {

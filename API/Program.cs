@@ -13,12 +13,21 @@ builder.Services.AddDbContext<StoreContext>
     options.UseSqlServer
     (
     builder.Configuration.GetConnectionString("connectionKey")
-     , b=>b.MigrationsAssembly(@"Infrastructure\Data\Migrations")
+     , b=>b.MigrationsAssembly(@"Infrastructure")
     )
 );
 builder.Services.AddControllers();
 builder.Services.AddSwaggerDocumentation();
 builder.Services.AddApplicationServices();
+builder.Services.AddCors(policy=>
+{
+    policy.AddPolicy("CorePolicy",(policy) =>
+        policy
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .WithOrigins("https://localhost:4200")
+    );
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 var app = builder.Build();
@@ -50,6 +59,11 @@ app.UseStatusCodePagesWithReExecute("/errors/{0}");
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseStaticFiles();
+//Mechanism that is used to tell the browsers to give a web application running at 
+//one origin access to selected resources from a different origin 
+//and for security reasons browsers restrict cross orgign 
+//
+app.UseCors("CorePolicy");
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
