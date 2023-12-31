@@ -1,14 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using API.Errors;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
-
 namespace API.Controllers
 {
-        [ApiExplorerSettings(IgnoreApi =true)]
+    [ApiExplorerSettings(IgnoreApi =true)]
     public class BuggyController:BaseAPIController
     {
         private readonly StoreContext _Context;

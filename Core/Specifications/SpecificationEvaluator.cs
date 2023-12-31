@@ -2,11 +2,11 @@ using core.Specifications;
 using Microsoft.EntityFrameworkCore;
 namespace Infrastructure.Data
 {
-    public class SpecificationEvaluator<TEntity> where TEntity :class
-    {
-        public static IQueryable<TEntity> GetQuery
-        (IQueryable<TEntity>InputQuey,ISpecifications<TEntity>Spec)
-        {
+public class SpecificationEvaluator<TEntity> where TEntity :class
+{
+public static IQueryable<TEntity> GetQuery
+(IQueryable<TEntity>InputQuey,ISpecifications<TEntity>Spec)
+{
 var Query = InputQuey;
 if (Spec.Criteria!=null)
 {
@@ -27,5 +27,5 @@ if (Spec.IsPaginEnabled)
 Query = Spec.Includes.Aggregate(Query,(current,include) => current.Include(include));
 return Query;     
 }
-    }
+}
 }

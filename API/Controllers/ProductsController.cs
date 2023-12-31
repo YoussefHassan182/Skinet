@@ -8,7 +8,7 @@ using Core.Specifications;
 using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers
 {
-    public class ProductsController : BaseAPIController
+      public class ProductsController : BaseAPIController
     {
         private readonly IGenericRepository<Product> _Repo;
         private readonly IMapper _Mapper;
@@ -21,10 +21,10 @@ namespace API.Controllers
         }
         [HttpGet("products")]
         public async Task<ActionResult<Pagination<ProductToReturnDto>>> GetProducts
-        //because we an object here as a parameter 
+        //because we have object here as a parameter
         //the Apicontroller will look in the body of the request
         //and there is no body when we using HttpGet
-        //so we will add attribute [FromQuery] so it will bind 
+        //so we will add attribute [FromQuery] so it will bind
         ([FromQuery]ProductSpecParams prodSpecParams)
         {
          var spec = new ProductWithTypesAndBrandsSpecification
