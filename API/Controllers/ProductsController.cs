@@ -43,14 +43,14 @@ namespace API.Controllers
         }       
           [HttpGet("products/{id}")]
           //A filter that specifies the type of the value and status code returned by the action.
-          [ProducesResponseType(typeof(APIResponse), StatusCodes.Status200OK)]
-          [ProducesResponseType(typeof(APIResponse), StatusCodes.Status404NotFound)]
+          // [ProducesResponseType(typeof(APIResponse), StatusCodes.Status200OK)]
+          // [ProducesResponseType(typeof(APIResponse), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ProductToReturnDto>> GetProduct(int id)
         {
          var spec = new ProductWithTypesAndBrandsSpecification(id);
          var product =await _Repo.GetEntityWithSpec(spec);
          if (product ==null) return NotFound(new APIResponse(404));
-           return Ok(_Mapper.Map<Product,ProductToReturnDto>(product));
+           return Ok( _Mapper.Map<Product,ProductToReturnDto>(product));
         }
       //   [HttpGet("brands")]
       //    public async Task<ActionResult<List<ProductBrand>>> GetProductBrands()

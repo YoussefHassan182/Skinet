@@ -1,5 +1,7 @@
 using API.Extensions;
+using API.Helpers;
 using API.Middlewares;
+using AutoMapper;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,9 +18,10 @@ builder.Services.AddDbContext<StoreContext>
      , b=>b.MigrationsAssembly(@"Infrastructure")
     )
 );
+builder.Services.AddAutoMapper(typeof(MappingProfiles));
+builder.Services.AddApplicationServices();
 builder.Services.AddControllers();
 builder.Services.AddSwaggerDocumentation();
-builder.Services.AddApplicationServices();
 builder.Services.AddCors(policy=>
 {
     policy.AddPolicy("CorePolicy",(policy) =>

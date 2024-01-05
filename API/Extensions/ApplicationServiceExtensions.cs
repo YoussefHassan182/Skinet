@@ -13,7 +13,6 @@ namespace API.Extensions
      public static IServiceCollection AddApplicationServices(this IServiceCollection Services)
      {
 
-Services.AddAutoMapper(typeof(MappingProfiles));
 
 Services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
 
