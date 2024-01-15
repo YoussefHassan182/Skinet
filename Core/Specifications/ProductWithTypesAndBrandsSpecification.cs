@@ -4,6 +4,7 @@ namespace Core.Specifications
 {
     public class ProductWithTypesAndBrandsSpecification : BaseSpecification<Product>
     {  
+        public ProductWithTypesAndBrandsSpecification(){}
          public ProductWithTypesAndBrandsSpecification(int Id) : base(x=>x.Id==Id)
         {
             AddInclude(x=>x.ProductType);

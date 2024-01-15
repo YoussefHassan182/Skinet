@@ -1,0 +1,80 @@
+<div class="container">
+    <div class="row">
+        <section class="col-3">
+            <h5 class="text-warning ml-5">Sort</h5>
+            <select class="custom-select mb-3" (change)="onSortSelected('')">
+                <option 
+                *ngFor="let sort of sortOptions"
+            [value]="sort.value"    
+                >
+                {{sort.name}}
+            </option>
+            </select>
+<h5 class="text-warning ml-5">Brands</h5>
+<ul class="list-group my-3">
+    <li 
+    *ngFor="let item of brands"
+    [class.active]="item.id === shopParams.brandId"
+    [value]="item.id"
+    (click)="onBrandSelected(item.id)"
+    class="list-group-item"
+     aria-current="true">{{item.name}}</li>
+  </ul>
+  <h5 class="text-warning ml-5">Types</h5>
+<ul class="list-group my-3">
+    <li 
+    *ngFor="let item of types"
+    [class.active]="item.id === shopParams.typeId"
+    [value]="item.id"
+    (click)="onTypeSelected(item.id)"
+    class="list-group-item" aria-current="true">{{item.name}}
+</li>
+  </ul>
+        </section>
+        <section class="col-9">
+            <div class="d-flex justify-content-between align-items-center pb-2">
+              <app-paging-header
+              [totalCount]="totalCount"
+              [pageSize]="shopParams.pageSize"
+              [pageNumber]="shopParams.pageNumber"
+              >
+              </app-paging-header>
+            <div class="form-inline mt-2 d-flex">
+                <input type="text" style="width: 300px;" placeholder="search" 
+                (keyup)="onSearch()"
+                class="form-control mx-1"
+                #search
+                >
+                <button (click)="onSearch()" class="btn btn-outline-primary  my-2">Search</button>
+                <button (click)="onReset()" class="btn btn-outline-success  my-2 mx-1">Reset</button>
+            </div>
+            </div>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                <!----Angular Directive starts with * it can change the dom of html-->
+<div class="col"
+*ngFor="let item of products | paginate: 
+{
+     itemsPerPage: shopParams.pageSize,
+      currentPage: shopParams.pageNumber, 
+      totalItems: totalCount
+ }"
+>
+                 <!--second step to pass data from parent component to child-->
+           <app-product-item [product]="item"></app-product-item>
+                </div>
+                
+              </div>  
+              <!-- <app-pager
+              (pageChanged)="onPageChanged($event)"
+            
+              >
+              </app-pager> -->
+              <pagination-controls 
+              class="my-pagination"
+(pageChange)="onPageChanged($event)"
+*ngIf="totalCount>0"
+>
+></pagination-controls>
+                 </section>
+    </div>
+</div>
