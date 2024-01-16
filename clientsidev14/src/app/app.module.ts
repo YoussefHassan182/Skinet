@@ -9,6 +9,7 @@ import {HttpClientModule} from '@angular/common/http';
 import { CoreModule } from './core/core.module';
 import { ShopModule } from './shop/shop.module';
 import { SharedModule } from './shared/shared.module';
+import { HomeModule } from './home/home.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -19,8 +20,9 @@ import { SharedModule } from './shared/shared.module';
     NgbModule,
     HttpClientModule,
     CoreModule, //it have the navbar component
-    ShopModule,
-    SharedModule //it have the shared modules
+    //ShopModule, we remove it to confirm lazy loading
+    SharedModule, //it have the shared modules
+HomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

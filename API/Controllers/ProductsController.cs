@@ -32,8 +32,7 @@ namespace API.Controllers
         //the Apicontroller will look in the body of the request
         //and there is no body when we using HttpGet
         //so we will add attribute [FromQuery] so it will bind
-        ([FromQuery]ProductSpecParams prodSpecParams)
-        {
+        ([FromQuery]ProductSpecParams prodSpecParams){
          var spec = new ProductWithTypesAndBrandsSpecification
          (prodSpecParams);
          var countSpec = new ProductsWithFiltersForCountSpecifications(prodSpecParams);
