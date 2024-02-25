@@ -2,7 +2,7 @@
     <div class="row">
         <section class="col-3">
             <h5 class="text-warning ml-5">Sort</h5>
-            <select class="custom-select mb-3" (change)="onSortSelected('')">
+            <select class="form-select mb-3" (change)="onSortSelected('')">
                 <option 
                 *ngFor="let sort of sortOptions"
             [value]="sort.value"    
@@ -78,3 +78,4 @@
                  </section>
     </div>
 </div>
+
